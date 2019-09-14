@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="description" content="Calculator" />
+        <link rel="apple-touch-icon" href="logo192.png" />
+        <link rel="manifest" href="manifest.json" />
+        <title>Calculator</title>
+        <style>
+body, form {
+    position: absolute;
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+#display {
+    width: calc(100% - 10px);
+    padding-right: 10px;
+    font-size: 40px;
+    line-height: 100px;
+    color: #FFF;
+    text-align: right;
+    background: #333;
+    border: 0;
+}
+button {
+    float: right;
+    margin: -1px;
+    width: calc(25% + 2px);
+    height: calc(25% - 25px + 1px);
+    font-size: 40px;
+    color: #666;
+    background: #DDD;
+    border: 1px solid #AAA;
+    outline: none;
+    cursor: pointer;
+}
+button:last-of-type {
+    width: calc(50% + 2px);
+}
+        </style>
+    </head>
+    <body>
+        <input type="text" id="display" disabled />
+        <button id="sum">+</button>
+        <button type="number">9</button>
+        <button type="number">8</button>
+        <button type="number">7</button>
+        <button id="minus">-</button>
+        <button type="number">6</button>
+        <button type="number">5</button>
+        <button type="number">4</button>
+        <button id="division">/</button>
+        <button type="number">3</button>
+        <button type="number">2</button>
+        <button type="number">1</button>
+        <button id="multiply">*</button>
+        <button id="enter">ENTER</button>
+        <button type="number">0</button>
+    </body>
+    <script type='text/javascript'>
+        navigator.serviceWorker && navigator.serviceWorker.register('serviceWorker.js');
+
+        (function() {
+            var will_clean_display = false;
+            var pile = [];
+
+            document.querySelectorAll("button[type=number]").forEach(function(button) {
+                button.onclick = function(e) {
+                    if (will_clean_display) display.value = "";
+                    will_clean_display = false;
+                    display.value = display.value + button.innerHTML;
+                }
+            });
+
+            function register(number) {
+                pile.unshift(parseFloat(number));
+                display.value = pile[0];
+                will_clean_display = true;
+            }
+
+            enter.onclick = function(e) {
+                register(parseFloat(display.value));
+            }
+
+            sum.onclick = function(e) {
+                register(pile.shift() + parseFloat(display.value));
+            }
+
+            minus.onclick = function(e) {
+                register(pile.shift() - parseFloat(display.value));
+            }
+
+            multiply.onclick = function(e) {
+                register(pile.shift() * parseFloat(display.value));
+            }
+
+            division.onclick = function(e) {
+                register(pile.shift() / parseFloat(display.value));
+            }
+        })();
+    </script>
+</html>

@@ -10,8 +10,8 @@
         <link rel="manifest" href="manifest.json" />
         <title>Calculator</title>
         <style>
-body, form {
-    position: absolute;
+body {
+    position: fixed;
     margin: 0;
     top: 0;
     bottom: 0;
@@ -19,22 +19,29 @@ body, form {
     right: 0;
     overflow: hidden;
     font-family: sans-serif;
+    background: #333;
 }
 #display {
-    width: calc(100% - 10px);
-    padding-right: 10px;
+    position: absolute;
+    left: 0;
+    right: 10px;
+    height: 100px;
     font-size: 40px;
     line-height: 100px;
     color: #FFF;
     text-align: right;
-    background: #333;
-    border: 0;
+}
+#keyboard {
+    position: absolute;
+    top: 100px;
+    bottom: 0;
+    width: 100%;
 }
 button {
     float: right;
     margin: -1px;
     width: calc(25% + 2px);
-    height: calc(25% - 25px + 1px);
+    height: calc(25% + 2px);
     font-size: 40px;
     color: #666;
     background: #DDD;
@@ -45,23 +52,25 @@ button {
         </style>
     </head>
     <body>
-        <input type="text" id="display" disabled />
-        <button id="division">/</button>
-        <button type="number">9</button>
-        <button type="number">8</button>
-        <button type="number">7</button>
-        <button id="multiply">*</button>
-        <button type="number">6</button>
-        <button type="number">5</button>
-        <button type="number">4</button>
-        <button id="sum">+</button>
-        <button type="number">3</button>
-        <button type="number">2</button>
-        <button type="number">1</button>
-        <button id="minus">-</button>
-        <button id="enter">⏎</button>
-        <button type="number">.</button>
-        <button type="number">0</button>
+        <div id="display"></div>
+        <div id="keyboard">
+            <button id="division">/</button>
+            <button type="number">9</button>
+            <button type="number">8</button>
+            <button type="number">7</button>
+            <button id="multiply">*</button>
+            <button type="number">6</button>
+            <button type="number">5</button>
+            <button type="number">4</button>
+            <button id="sum">+</button>
+            <button type="number">3</button>
+            <button type="number">2</button>
+            <button type="number">1</button>
+            <button id="minus">-</button>
+            <button id="enter">⏎</button>
+            <button type="number">.</button>
+            <button type="number">0</button>
+        </div>
     </body>
     <script type='text/javascript'>
         navigator.serviceWorker && navigator.serviceWorker.register('serviceWorker.js');
@@ -72,36 +81,36 @@ button {
 
             document.querySelectorAll("button[type=number]").forEach(function(button) {
                 button.ontouchstart = function(e) {
-                    if (will_clean_display) display.value = "";
+                    if (will_clean_display) display.innerText = "";
                     will_clean_display = false;
-                    display.value = display.value + button.innerHTML;
+                    display.innerText = display.innerText + button.innerHTML;
                 }
             });
 
             function register(number) {
                 pile.unshift(parseFloat(number));
-                display.value = pile[0];
+                display.innerText = pile[0];
                 will_clean_display = true;
             }
 
-            enter.onclick = function(e) {
-                register(parseFloat(display.value));
+            enter.ontouchstart = function(e) {
+                register(parseFloat(display.innerText));
             }
 
-            sum.onclick = function(e) {
-                register(pile.shift() + parseFloat(display.value));
+            sum.ontouchstart = function(e) {
+                register(pile.shift() + parseFloat(display.innerText));
             }
 
-            minus.onclick = function(e) {
-                register(pile.shift() - parseFloat(display.value));
+            minus.ontouchstart = function(e) {
+                register(pile.shift() - parseFloat(display.innerText));
             }
 
-            multiply.onclick = function(e) {
-                register(pile.shift() * parseFloat(display.value));
+            multiply.ontouchstart = function(e) {
+                register(pile.shift() * parseFloat(display.innerText));
             }
 
-            division.onclick = function(e) {
-                register(pile.shift() / parseFloat(display.value));
+            division.ontouchstart = function(e) {
+                register(pile.shift() / parseFloat(display.innerText));
             }
         })();
     </script>

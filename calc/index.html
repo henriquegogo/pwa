@@ -42,27 +42,25 @@ button {
     outline: none;
     cursor: pointer;
 }
-button:last-of-type {
-    width: calc(50% + 2px);
-}
         </style>
     </head>
     <body>
         <input type="text" id="display" disabled />
-        <button id="sum">+</button>
+        <button id="division">/</button>
         <button type="number">9</button>
         <button type="number">8</button>
         <button type="number">7</button>
-        <button id="minus">-</button>
+        <button id="multiply">*</button>
         <button type="number">6</button>
         <button type="number">5</button>
         <button type="number">4</button>
-        <button id="division">/</button>
+        <button id="sum">+</button>
         <button type="number">3</button>
         <button type="number">2</button>
         <button type="number">1</button>
-        <button id="multiply">*</button>
-        <button id="enter">ENTER</button>
+        <button id="minus">-</button>
+        <button id="enter">⏎</button>
+        <button type="number">.</button>
         <button type="number">0</button>
     </body>
     <script type='text/javascript'>
@@ -73,7 +71,7 @@ button:last-of-type {
             var pile = [];
 
             document.querySelectorAll("button[type=number]").forEach(function(button) {
-                button.onclick = function(e) {
+                button.ontouchstart = function(e) {
                     if (will_clean_display) display.value = "";
                     will_clean_display = false;
                     display.value = display.value + button.innerHTML;

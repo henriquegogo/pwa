@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="description" content="Calculator" />
+        <link rel="apple-touch-icon" href="icon192.png" />
+        <link rel="manifest" href="manifest.json" />
+        <title>Broadcaster</title>
+        <style>
+body {
+    position: fixed;
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    font-family: monospace;
+    background: #0D0208;
+}
+#chat {
+    position: absolute;
+    top: 0; bottom: 60px;
+    left: 0; right: 0;
+    padding: 10px;
+    color: #EEE;
+    color: #00FF41;
+    line-height: 2em;
+    overflow: auto;
+}
+input {
+    position: absolute;
+    width: calc(100% - 20px);
+    bottom: 0;
+    padding: 0 10px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 20px;
+    border: none;
+    border-radius: 0;
+    outline: none;
+}
+        </style>
+    </head>
+    <body>
+        <div id="chat">
+            ### First, type your name<br />
+        </div>
+        <form id="input_form" />
+            <input name="message" type="text" autofocus autocomplete="off" />
+        </form>
+    </body>
+    <script type='text/javascript'>
+        navigator.serviceWorker && navigator.serviceWorker.register('serviceWorker.js');
+
+        (function() {
+            var name = "";
+            var ws = new WebSocket("wss://connect.websocket.in/gogschat");
+
+            input_form.onsubmit = function(e) {
+                e.preventDefault();
+                if (!name) {
+                    name = this.message.value;
+                    chat.innerHTML = chat.innerHTML + "### Hello, " + name + ", let's talk with somebody<br />";
+                }
+                else {
+                    ws.send(name + ": " + this.message.value);
+                    chat.innerHTML = chat.innerHTML + "> " + this.message.value + "<br />";
+                }
+                this.reset();
+                chat.scrollTo(0, chat.scrollHeight);
+            };
+
+            ws.onmessage = function(msg) {
+                chat.innerHTML = chat.innerHTML + msg.data + "<br />";
+            }
+        })();
+    </script>
+</html>

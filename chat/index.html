@@ -65,6 +65,7 @@ input {
                 if (!name) {
                     name = this.message.value;
                     chat.innerHTML = chat.innerHTML + "### Hello, " + name + ", let's talk with somebody<br />";
+                    ws.send(name + " joined");
                 }
                 else {
                     ws.send(name + ": " + this.message.value);
@@ -76,6 +77,7 @@ input {
 
             ws.onmessage = function(msg) {
                 chat.innerHTML = chat.innerHTML + msg.data + "<br />";
+                chat.scrollTo(0, chat.scrollHeight);
             }
         })();
     </script>

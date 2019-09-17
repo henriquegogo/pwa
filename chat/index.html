@@ -57,11 +57,16 @@ input {
         navigator.serviceWorker && navigator.serviceWorker.register('serviceWorker.js');
 
         (function() {
-            var name = "";
-            var ws = new WebSocket("wss://connect.websocket.in/gogschat");
+            var name, ws, url = "wss://connect.websocket.in/gogschat";
+            ws = new WebSocket(url);
+
+            document.body.onfocus = function(e) {
+                ws.readyState !== ws.OPEN && (ws = new WebSocket(url));
+            }
 
             input_form.onsubmit = function(e) {
                 e.preventDefault();
+
                 if (!name) {
                     name = this.message.value;
                     chat.innerHTML = chat.innerHTML + "### Hello, " + name + ", let's talk with somebody<br />";

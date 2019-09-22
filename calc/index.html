@@ -78,14 +78,14 @@ button {
         (function() {
             var result = null, is_operator;
             document.querySelectorAll("button").forEach(function(button) {
-                button.onclick = function() {
+                button.ontouchstart = function() {
                     is_operator = button.classList[0] === "operator";
                     if (result && !is_operator) display.innerText = null;
                     display.innerText = display.innerText + button.innerText;
                     result = null;
                 }
             });
-            equal.onclick = function() {
+            equal.ontouchstart = function() {
                 try {
                     result = display.innerText = result ? null : new Function("return " + (display.innerText || "''"))();
                 } catch {

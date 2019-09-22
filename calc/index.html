@@ -54,63 +54,43 @@ button {
     <body>
         <div id="display"></div>
         <div id="keyboard">
-            <button id="division">/</button>
-            <button type="number">9</button>
-            <button type="number">8</button>
-            <button type="number">7</button>
-            <button id="multiply">*</button>
-            <button type="number">6</button>
-            <button type="number">5</button>
-            <button type="number">4</button>
-            <button id="sum">+</button>
-            <button type="number">3</button>
-            <button type="number">2</button>
-            <button type="number">1</button>
-            <button id="minus">-</button>
-            <button id="enter">⏎</button>
-            <button type="number">.</button>
-            <button type="number">0</button>
+            <button class="operator">/</button>
+            <button>9</button>
+            <button>8</button>
+            <button>7</button>
+            <button class="operator">*</button>
+            <button>6</button>
+            <button>5</button>
+            <button>4</button>
+            <button class="operator">+</button>
+            <button>3</button>
+            <button>2</button>
+            <button>1</button>
+            <button class="operator">-</button>
+            <button id="equal">=</button>
+            <button>.</button>
+            <button>0</button>
         </div>
     </body>
-    <script type='text/javascript'>
-        navigator.serviceWorker && navigator.serviceWorker.register('serviceWorker.js');
+    <script type="text/javascript">
+        navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
 
         (function() {
-            var will_clean_display = false;
-            var pile = [];
-
-            document.querySelectorAll("button[type=number]").forEach(function(button) {
-                button.ontouchstart = function(e) {
-                    if (will_clean_display) display.innerText = "";
-                    will_clean_display = false;
-                    display.innerText = display.innerText + button.innerHTML;
+            var result = null, is_operator;
+            document.querySelectorAll("button").forEach(function(button) {
+                button.onclick = function() {
+                    is_operator = button.classList[0] === "operator";
+                    if (result && !is_operator) display.innerText = null;
+                    display.innerText = display.innerText + button.innerText;
+                    result = null;
                 }
             });
-
-            function register(number) {
-                pile.unshift(parseFloat(number));
-                display.innerText = pile[0];
-                will_clean_display = true;
-            }
-
-            enter.ontouchstart = function(e) {
-                register(parseFloat(display.innerText));
-            }
-
-            sum.ontouchstart = function(e) {
-                register(pile.shift() + parseFloat(display.innerText));
-            }
-
-            minus.ontouchstart = function(e) {
-                register(pile.shift() - parseFloat(display.innerText));
-            }
-
-            multiply.ontouchstart = function(e) {
-                register(pile.shift() * parseFloat(display.innerText));
-            }
-
-            division.ontouchstart = function(e) {
-                register(pile.shift() / parseFloat(display.innerText));
+            equal.onclick = function() {
+                try {
+                    result = display.innerText = result ? null : new Function("return " + (display.innerText || "''"))();
+                } catch {
+                    result = display.innerText = null;
+                }
             }
         })();
     </script>

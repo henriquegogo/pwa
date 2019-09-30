@@ -1,6 +1,6 @@
 {
-  "short_name": "PlanPoker",
-  "name": "Planning Poker",
+  "short_name": "Push me",
+  "name": "Push Notification",
   "icons": [
     {
       "src": "favicon.ico",
@@ -19,7 +19,6 @@
     }	    
   ],
   "start_url": ".",
-  "scope": "/pwa/planpoker/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

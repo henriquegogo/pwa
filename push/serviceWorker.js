@@ -13,3 +13,12 @@ self.addEventListener('fetch', function(event) {
     })
   );
 });
+
+self.addEventListener('activate', function(event) {
+  const ws = new WebSocket("wss://connect.websocket.in/gogspush");
+  ws.onmessage = function(msg) {
+    event.waitUntil(self.registration.showNotification('Push Notification', {
+      body: msg.data,
+    }));
+  }
+});

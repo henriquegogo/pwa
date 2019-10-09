@@ -17,6 +17,7 @@
         navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
 
         (function() {
+            Notification.requestPermission();
         })();
     </script>
 </html>

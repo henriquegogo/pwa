@@ -14,11 +14,11 @@ self.addEventListener('fetch', function(event) {
   );
 });
 
-self.addEventListener('activate', function(event) {
-  const ws = new WebSocket("wss://connect.websocket.in/gogspush");
-  ws.onmessage = function(msg) {
-    event.waitUntil(self.registration.showNotification('Push Notification', {
+self.addEventListener('sync', function(event) {
+  (!self.ws || self.ws.readyState !== self.ws.OPEN) && (self.ws = new WebSocket("wss://connect.websocket.in/gogspush"));
+  self.ws.onmessage = function(msg) {
+    self.registration.showNotification('Push Notification', {
       body: msg.data,
-    }));
+    });
   }
 });

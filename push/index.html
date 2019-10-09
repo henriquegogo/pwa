@@ -9,12 +9,18 @@
         <link rel="apple-touch-icon" href="icon192white.png" />
         <link rel="manifest" href="manifest.json" />
         <title>Push Notification</title>
-        <style></style>
+        <style>html { font-family: sans-serif }</style>
     </head>
     <body>
+        <center>
+            <h1>Push Notifications Listener</h1>
+            <h2>Now you can close this app</h2>
+        </center>
     </body>
     <script type="text/javascript">
-        navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
+        navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js").then(function(sw) {
+            sw.sync.register('push-notification');
+        });
 
         (function() {
             Notification.requestPermission();

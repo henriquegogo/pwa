@@ -57,7 +57,7 @@
         navigator.serviceWorker && navigator.serviceWorker.register('serviceWorker.js');
 
         (function() {
-            var name, ws, url = "wss://connect.websocket.in/gogschat";
+            var name, ws, url = "wss://connect.websocket.in/v2/1?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImU4OTBmY2I5MDY2MjY1Yjk0ZjQ1MjQwNDhiOWIxN2U0ZTRmNzg1YzA1NjRmMTBmNTQ5NDkyYTNlMzA3M2U4NzUyMjBmNjVkNTYxNmRhNmQwIn0.eyJhdWQiOiI4IiwianRpIjoiZTg5MGZjYjkwNjYyNjViOTRmNDUyNDA0OGI5YjE3ZTRlNGY3ODVjMDU2NGYxMGY1NDk0OTJhM2UzMDczZTg3NTIyMGY2NWQ1NjE2ZGE2ZDAiLCJpYXQiOjE1NzkyODQwOTcsIm5iZiI6MTU3OTI4NDA5NywiZXhwIjoxNjEwOTA2NDk3LCJzdWIiOiIzNjAiLCJzY29wZXMiOltdfQ.avlmQIRLuyGviNvJzLvzteaSNKFqY1lFtBMr29qf5-ucbTCHBgO4k89Qvxtkwtwffg1TWiVn9hCle1ZJ8AiwunfxxbPiUwEqXpNdjABV2ZT0ZcD7Tr0KsD-4CWZDIrrYqI-XoNHVpj8-XiyERC22-JsH3ULqMd5cdIWBPGKMZOLOaKs78R-6dsSN3vvDggigQy8DnO4W_OJpo3bRnhr6VpxyQWUw7E14WRVS_IIR9ItQxRiu5ZKzBtopHjXzxNthRqnWIRraCIsNFBpXfJ4dVFLGQcGiuOpn8Xx8XY5v3UUG2uC7Yrxa0LLezIilCVEUjC-vh4mrCts9Dqvq6TDoL0bzL9l3Hfu0Yu1S4jPn-1zGKRMLuQ7mxZSvMU1RO4qXbikaVHqZP0aDQxeomyviG7USjGGCLaszR_zZm4us3Xb5ePbVgtvESIwJbMPlK3UMWWlqYrRJUVxwxUw2U_JTNIozLJTFTRN4_KHOYLq_ndLFAA9HrJY0ye1nfY2nb4kzAd3knZ-xQ_DMxImpjfrrG0Tkpex8FtIVM4Nm0g7UnT8OdDPNhHi3hZ1qXD2Tc_KOCbiTbbX1v33cZtuez67tJrh4ahz_mN8OI1nkmQjkAX33IXazJhs3vcYzM0DlTtyEYXzlbrsrjW0ivtR3k3UbXMtFrK_qoLtDcJL5y9EGdio";
             ws = new WebSocket(url);
 
             document.body.onfocus = function(e) {

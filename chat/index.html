@@ -57,7 +57,7 @@
         navigator.serviceWorker && navigator.serviceWorker.register('serviceWorker.js');
 
         (function() {
-            var name, url = "https://web-io.herokuapp.com";
+            var name, messages = [], url = "https://web-io.herokuapp.com";
 
             input_form.onsubmit = function(e) {
                 e.preventDefault();
@@ -79,6 +79,12 @@
                 chat.scrollTo(0, chat.scrollHeight);
             };
 
+            setInterval(function() {
+                fetch(url).then(function(res) { return res.json() })
+                    .then(function(data) {
+                        console.log(data);
+                    });
+            }, 1000);
             /*
             ws.onmessage = function(msg) {
                 chat.innerHTML = chat.innerHTML + msg.data + "<br />";

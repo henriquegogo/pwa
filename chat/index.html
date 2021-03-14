@@ -65,10 +65,14 @@
                 if (!name) {
                     name = this.message.value;
                     chat.innerHTML = chat.innerHTML + "### Hello, " + name + ", let's talk with somebody<br />";
-                    fetch(url, {method: 'POST', body: JSON.stringify({message:name+' joined'})});
+                    var data = new FormData();
+                    data.message = name + ' joined';
+                    fetch(url, {method: 'POST', body: data});
                 }
                 else {
-                    fetch(url, {method: 'POST', body: JSON.stringify({message:name + ": " + this.message.value})});
+                    var data = new FormData();
+                    data.message = name + ": " + this.message.value;
+                    fetch(url, {method: 'POST', body: data});
                     chat.innerHTML = chat.innerHTML + "> " + this.message.value + "<br />";
                 }
                 this.reset();

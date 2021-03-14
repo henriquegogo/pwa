@@ -57,7 +57,8 @@
         navigator.serviceWorker && navigator.serviceWorker.register('serviceWorker.js');
 
         (function() {
-            var name, messages = [], url = "https://web-io.herokuapp.com";
+            var name, url = "https://web-io.herokuapp.com";
+            localStorage.messages = '[]';
 
             input_form.onsubmit = function(e) {
                 e.preventDefault();
@@ -83,11 +84,13 @@
                 fetch(url).then(function(res) { return res.json() })
                     .then(function(data) {
                         for (var item of data) {
+                            var messages = JSON.parse(localStorage.messages);
                             const alreadyExist = messages.some(message =>
                                 item.timestamp === message.timestamp && item.timestamp === message.message
                             );
                             if (!alreadyExist) {
                                 messages.push(item);
+                                localStorage.messages = JSON.stringify(messages);
                                 chat.innerHTML = chat.innerHTML + item.message + "<br />";
                                 chat.scrollTo(0, chat.scrollHeight);
                             }

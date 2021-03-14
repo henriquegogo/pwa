@@ -82,15 +82,19 @@
             setInterval(function() {
                 fetch(url).then(function(res) { return res.json() })
                     .then(function(data) {
+                        for (var item of data) {
+                            const alreadyExist = messages.some(message =>
+                                item.timestamp === message.timestamp && item.timestamp === message.message
+                            );
+                            if (!alreadyExist) {
+                                messages.push(item);
+                                chat.innerHTML = chat.innerHTML + item.message + "<br />";
+                                chat.scrollTo(0, chat.scrollHeight);
+                            }
+                        }
                         console.log(data);
                     });
             }, 1000);
-            /*
-            ws.onmessage = function(msg) {
-                chat.innerHTML = chat.innerHTML + msg.data + "<br />";
-                chat.scrollTo(0, chat.scrollHeight);
-            }
-            */
         })();
     </script>
 </html>

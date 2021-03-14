@@ -83,10 +83,11 @@
             setInterval(function() {
                 fetch(url).then(function(res) { return res.json() })
                     .then(function(data) {
+                        console.log('fetched', data);
                         for (var item of data) {
                             var messages = JSON.parse(localStorage.messages);
                             const alreadyExist = messages.some(message =>
-                                item.timestamp === message.timestamp && item.timestamp === message.message
+                                item.timestamp === message.timestamp && item.message === message.message
                             );
                             if (!alreadyExist) {
                                 messages.push(item);
@@ -95,7 +96,6 @@
                                 chat.scrollTo(0, chat.scrollHeight);
                             }
                         }
-                        console.log(data);
                     });
             }, 1000);
         })();

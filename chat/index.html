@@ -66,12 +66,12 @@
                     name = this.message.value;
                     chat.innerHTML = chat.innerHTML + "### Hello, " + name + ", let's talk with somebody<br />";
                     var data = new FormData();
-                    data.message = name + ' joined';
+                    data.set('message', name + ' joined');
                     fetch(url, {method: 'POST', body: data});
                 }
                 else {
                     var data = new FormData();
-                    data.message = name + ": " + this.message.value;
+                    data.set('message', name + ": " + this.message.value);
                     fetch(url, {method: 'POST', body: data});
                     chat.innerHTML = chat.innerHTML + "> " + this.message.value + "<br />";
                 }

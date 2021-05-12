@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8' />
+        <link rel='shortcut icon' href='favicon.ico' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <meta name='theme-color' content='#000000' />
+        <meta name='description' content='Video Grid' />
+        <link rel='apple-touch-icon' href='icon192white.png' />
+        <link rel='manifest' href='manifest.json' />
+        <title>Video Grid</title>
+        <style>
+            body {
+                position: fixed;
+                top: 0; bottom: 0;
+                left: 0; right: 0;
+                display: flex;
+                flex-wrap: wrap;
+                margin: 0;
+            }
+            body iframe {
+                flex: 1;
+            }
+            #playbutton {
+                position: fixed;
+                width: 33%;
+                height: 33%;
+                top: 33%;
+                left: 33%;
+            }
+        </style>
+    </head>
+    <body>
+        <button id='playbutton'>Play</button>
+    </body>
+    <script src='https://www.youtube.com/iframe_api'></script>
+    <script>
+    var players = [];
+
+    playbutton.onclick = function() {
+        for (var player of players) {
+            player.playVideo();
+        }
+    };
+
+    function onYouTubeIframeAPIReady() {
+        var videoList = ['6A0MK9Ao3DU', '6lrqqlH0igw', 'Mi3s-o3LRjg'];
+
+        for (var videoId of videoList) {
+            var id = 'player' + videoId;
+            var videoContainer = document.createElement('div');
+            videoContainer.id = id;
+            document.body.appendChild(videoContainer);
+
+            var player = new YT.Player(id, {
+                videoId: videoId,
+                width: 'auto',
+                height: 'auto',
+                playerVars: {
+                    autoplay: 1
+                }
+            });
+
+            players.push(player);
+        }
+    }
+    </script>
+</html>

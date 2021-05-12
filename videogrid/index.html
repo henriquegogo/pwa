@@ -58,7 +58,8 @@
                 height: 'auto',
                 playerVars: {
                     autoplay: 1
-                }
+                },
+                onReady: function() { player.playVideo(); player.stopVideo() }
             });
 
             players.push(player);

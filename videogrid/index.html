@@ -41,12 +41,15 @@
         for (var player of players) {
             player.playVideo();
         }
+
+        playbutton.style.display = 'none';
     };
 
     function onYouTubeIframeAPIReady() {
-        var videoList = ['6A0MK9Ao3DU', '6lrqqlH0igw', 'Mi3s-o3LRjg'];
+        var videosList = location.hash.split('#').slice(1);
+        if (videosList.length == 0) videosList.push('Mi3s-o3LRjg');
 
-        for (var videoId of videoList) {
+        for (var videoId of videosList) {
             var id = 'player' + videoId;
             var videoContainer = document.createElement('div');
             videoContainer.id = id;
@@ -57,9 +60,18 @@
                 width: 'auto',
                 height: 'auto',
                 playerVars: {
-                    autoplay: 1
+                    controls: 0,
+                    disablekb: 1,
+                    fs: 0,
+                    modestbranding: 1,
+                    rel: 0,
+                    showinfo: 0
                 },
-                onReady: function() { player.playVideo(); player.stopVideo() }
+                events: {
+                    onReady: function(event) {
+                        event.target.playVideo();
+                    }
+                }
             });
 
             players.push(player);

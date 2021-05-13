@@ -87,7 +87,7 @@
     </body>
     <script src='https://www.youtube.com/iframe_api'></script>
     <script>
-    navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
+    navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js").then(reg => reg.update());
 
     var players = [];
 

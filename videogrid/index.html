@@ -14,8 +14,6 @@
                 position: fixed;
                 top: 0; bottom: 0;
                 left: 0; right: 0;
-                display: flex;
-                flex-wrap: wrap;
                 margin: 0;
                 background: #222;
                 font-family: sans-serif;
@@ -45,13 +43,19 @@
                 font-size: 25px;
                 text-transform: uppercase;
             }
+            #videos {
+                position: fixed;
+                top: 0; bottom: 0;
+                left: 0; right: 0;
+                display: flex;
+                flex-wrap: wrap;
+            }
             #controllers {
                 position: fixed;
                 top: 0; bottom: 0;
                 left: 0; right: 0;
                 display: flex;
                 flex-wrap: wrap;
-                margin: 0;
             }
             #controllers > * {
                 position: relative;
@@ -59,9 +63,10 @@
                 flex: 1;
                 cursor: pointer;
                 color: white;
+                min-width: 300px;
                 font-weight: bold;
                 text-shadow: 0 0 3px black;
-                text-align: center;
+                text-align: right;
             }
             iframe {
                 flex: 1;
@@ -98,6 +103,7 @@
             <input type='text' name='-' placeholder='https://youtube.com/watch?v=VIDEO_ID' />
             <button>Submit</button>
         </form>
+        <div id='videos'></div>
         <div id='controllers'></div>
         <button id='playbutton'>
             <div id='arrow'></div>
@@ -134,7 +140,7 @@
 
             var videoContainer = document.createElement('div');
             videoContainer.id = id;
-            document.body.appendChild(videoContainer);
+            videos.appendChild(videoContainer);
 
             var player = new YT.Player(id, {
                 videoId: videoId,

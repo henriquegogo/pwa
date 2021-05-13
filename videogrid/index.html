@@ -87,6 +87,8 @@
     </body>
     <script src='https://www.youtube.com/iframe_api'></script>
     <script>
+    navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
+
     var players = [];
 
     playbutton.onclick = function() {

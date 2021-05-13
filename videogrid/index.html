@@ -54,8 +54,14 @@
                 margin: 0;
             }
             #controllers > * {
+                position: relative;
+                padding: 25px;
                 flex: 1;
                 cursor: pointer;
+                color: white;
+                font-weight: bold;
+                text-shadow: 0 0 3px black;
+                text-align: center;
             }
             iframe {
                 flex: 1;
@@ -154,18 +160,21 @@
             players.push(player);
 
             var videoController = document.createElement('div');
+            videoController.innerHTML = 'Volume: 100%';
             videoController.player = player;
             videoController.onclick = function(event) {
                 var player = event.target.player;
                 var volume = player.getVolume();
                 
-                if (volume == 100) player.setVolume(50);
-                else if (volume == 50) player.setVolume(25);
-                else if (volume == 25) player.setVolume(0);
-                else player.setVolume(100);
+                if (volume == 100) volume = 50;
+                else if (volume == 50) volume = 25;
+                else if (volume == 25) volume = 0;
+                else volume = 100;
+
+                player.setVolume(volume);
+                event.target.innerHTML = 'Volume: '+volume+'%';
             }
             controllers.appendChild(videoController);
-
         }
     }
     </script>

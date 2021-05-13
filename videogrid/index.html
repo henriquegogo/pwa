@@ -6,7 +6,7 @@
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='theme-color' content='#000000' />
         <meta name='description' content='Video Grid' />
-        <link rel='apple-touch-icon' href='icon192white.png' />
+        <link rel='apple-touch-icon' href='icon512.png' />
         <link rel='manifest' href='manifest.json' />
         <title>Video Grid</title>
         <style>
@@ -19,10 +19,6 @@
                 margin: 0;
                 background: #222;
                 font-family: sans-serif;
-            }
-            body iframe {
-                z-index: 1;
-                flex: 1;
             }
             form {
                 display: none;
@@ -49,8 +45,22 @@
                 font-size: 25px;
                 text-transform: uppercase;
             }
+            #controllers {
+                position: fixed;
+                top: 0; bottom: 0;
+                left: 0; right: 0;
+                display: flex;
+                flex-wrap: wrap;
+                margin: 0;
+            }
+            #controllers > * {
+                flex: 1;
+                cursor: pointer;
+            }
+            iframe {
+                flex: 1;
+            }
             #playbutton {
-                z-index: 2;
                 display: none;
                 position: fixed;
                 width: 100%;
@@ -82,6 +92,7 @@
             <input type='text' name='-' placeholder='https://youtube.com/watch?v=VIDEO_ID' />
             <button>Submit</button>
         </form>
+        <div id='controllers'></div>
         <button id='playbutton'>
             <div id='arrow'></div>
         </button>
@@ -95,6 +106,7 @@
     playbutton.onclick = function() {
         for (var player of players) {
             player.unMute();
+            player.setVolume(100);
             player.seekTo(0);
             player.playVideo();
         }
@@ -104,10 +116,16 @@
 
     function onYouTubeIframeAPIReady() {
         var videosList = location.search.slice(3).split('&-=').filter(id => id);
-        if (!videosList.length) form.style.display = 'block';
+
+        if (!videosList.length) {
+            form.style.display = 'block';
+        } else {
+            playbutton.style.display = 'block';
+        }
 
         for (var videoId of videosList) {
             var id = 'player' + videoId;
+
             var videoContainer = document.createElement('div');
             videoContainer.id = id;
             document.body.appendChild(videoContainer);
@@ -122,7 +140,8 @@
                     fs: 0,
                     modestbranding: 1,
                     rel: 0,
-                    showinfo: 0
+                    showinfo: 0,
+                    autoplay: 1
                 },
                 events: {
                     onReady: function(event) {
@@ -133,7 +152,20 @@
             });
 
             players.push(player);
-            playbutton.style.display = 'block';
+
+            var videoController = document.createElement('div');
+            videoController.player = player;
+            videoController.onclick = function(event) {
+                var player = event.target.player;
+                var volume = player.getVolume();
+                
+                if (volume == 100) player.setVolume(50);
+                else if (volume == 50) player.setVolume(25);
+                else if (volume == 25) player.setVolume(0);
+                else player.setVolume(100);
+            }
+            controllers.appendChild(videoController);
+
         }
     }
     </script>

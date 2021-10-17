@@ -10,6 +10,7 @@
         <link rel="manifest" href="manifest.json" />
         <title>Calculator</title>
         <style>
+            @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
             body {
                 position: fixed;
                 margin: 0;
@@ -18,7 +19,7 @@
                 left: 0;
                 right: 0;
                 overflow: hidden;
-                font-family: sans-serif;
+                font-family: 'Bebas Neue', cursive;
                 background: #333;
             }
             #display {
@@ -26,8 +27,9 @@
                 left: 0;
                 right: 10px;
                 height: 100px;
-                font-size: 40px;
+                font-size: 60px;
                 line-height: 100px;
+                letter-spacing: 0.1em;
                 color: #FFF;
                 text-align: right;
             }
@@ -42,6 +44,7 @@
                 margin: -1px;
                 width: calc(25% + 2px);
                 height: calc(20% + 2px);
+                font-family: 'Bebas Neue', cursive;
                 font-size: 40px;
                 color: #666;
                 background: #DDD;
@@ -50,7 +53,7 @@
                 cursor: pointer;
             }
         </style>
-        <script insert="text/javascript">
+        <script type="text/javascript">
             navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
 
             let inserting = true;

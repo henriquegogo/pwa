@@ -41,7 +41,7 @@
                 float: right;
                 margin: -1px;
                 width: calc(25% + 2px);
-                height: calc(25% + 2px);
+                height: calc(20% + 2px);
                 font-size: 40px;
                 color: #666;
                 background: #DDD;
@@ -50,48 +50,124 @@
                 cursor: pointer;
             }
         </style>
+        <script insert="text/javascript">
+            navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
+
+            let inserting = true;
+            let lastx = 0;
+            let stack = [0, 0, 0, 0];
+
+            function insert(c) {
+                if (!inserting) stack[0] = 0;
+                inserting = true;
+                let x = parseFloat('' + stack[0] + c);
+                show(x);
+            }
+
+            function show(num) {
+                stack[0] = num;
+                display.innerText = stack[0];
+            }
+
+            function enter() {
+                stack[3] = stack[2];
+                stack[2] = stack[1];
+                stack[1] = stack[0];
+                inserting = false;
+            }
+
+            function add() {
+                lastx = stack[0];
+                show(stack[1] + stack[0]);
+                stack[2] = stack[3];
+                stack[1] = stack[2];
+                inserting = false;
+            }
+
+            function sub() {
+                lastx = stack[0];
+                show(stack[1] - stack[0]);
+                stack[2] = stack[3];
+                stack[1] = stack[2];
+                inserting = false;
+            }
+
+            function mul() {
+                lastx = stack[0];
+                show(stack[1] * stack[0]);
+                stack[2] = stack[3];
+                stack[1] = stack[2];
+                inserting = false;
+            }
+
+            function div() {
+                lastx = stack[0];
+                show(stack[1] / stack[0]);
+                stack[2] = stack[3];
+                stack[1] = stack[2];
+                inserting = false;
+            }
+
+            function swap() {
+                let x = stack[0];
+                show(stack[1]);
+                stack[1] = x;
+                inserting = false;
+            }
+
+            function rotate() {
+                let x = stack[0];
+                show(stack[1]);
+                stack[1] = stack[2];
+                stack[2] = stack[3];
+                stack[3] = x;
+                inserting = false;
+            }
+
+            function lstx() {
+                stack[3] = stack[2];
+                stack[2] = stack[1];
+                stack[1] = stack[0];
+                show(lastx);
+                inserting = false;
+            }
+
+            function clx() {
+                show(0);
+            }
+
+            function chs() {
+                show(-1 * stack[0]);
+            }
+        </script>
     </head>
     <body>
         <div id="display"></div>
         <div id="keyboard">
-            <button class="operator">/</button>
-            <button>9</button>
-            <button>8</button>
-            <button>7</button>
-            <button class="operator">*</button>
-            <button>6</button>
-            <button>5</button>
-            <button>4</button>
-            <button class="operator">+</button>
-            <button>3</button>
-            <button>2</button>
-            <button>1</button>
-            <button class="operator">-</button>
-            <button id="equal">=</button>
-            <button>.</button>
-            <button>0</button>
+            <button onclick="rotate()">R🠗</button>
+            <button onclick="swap()">x≷y</button>
+            <button onclick="chs()">CHS</button>
+            <button onclick="clx()">CLX</button>
+
+            <button onclick="div()">/</button>
+            <button onclick="insert(9)">9</button>
+            <button onclick="insert(8)">8</button>
+            <button onclick="insert(7)">7</button>
+
+            <button onclick="mul()">*</button>
+            <button onclick="insert(6)">6</button>
+            <button onclick="insert(5)">5</button>
+            <button onclick="insert(4)">4</button>
+
+            <button onclick="add()">+</button>
+            <button onclick="insert(3)">3</button>
+            <button onclick="insert(2)">2</button>
+            <button onclick="insert(1)">1</button>
+
+            <button onclick="sub()">-</button>
+            <button onclick="enter()">ENTER</button>
+            <button onclick="insert(.)">.</button>
+            <button onclick="insert(0)">0</button>
         </div>
     </body>
-    <script type="text/javascript">
-        navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
-
-        (function() {
-            var result = null, is_operator;
-            document.querySelectorAll("button").forEach(function(button) {
-                button.ontouchstart = function() {
-                    is_operator = button.classList[0] === "operator";
-                    if (result && !is_operator) display.innerText = null;
-                    display.innerText = display.innerText + button.innerText;
-                    result = null;
-                }
-            });
-            equal.ontouchstart = function() {
-                try {
-                    result = display.innerText = result ? null : new Function("return " + (display.innerText || "''"))();
-                } catch {
-                    result = display.innerText = null;
-                }
-            }
-        })();
-    </script>
 </html>

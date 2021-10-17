@@ -43,7 +43,7 @@
                 float: left;
                 margin: -1px;
                 width: calc(25% + 2px);
-                height: calc(20% + 2px);
+                height: calc(16.67% + 2px);
                 font-family: 'Bebas Neue', cursive;
                 font-size: 40px;
                 color: #666;
@@ -56,9 +56,11 @@
         <script type="text/javascript">
             navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
 
-            const CONCAT = 'concat'; ROLL = 'roll';
-            let action = CONCAT;
+            const INSERT = 'concat'; ROLL = 'roll';
+            let action;
             let l = 0, x = 0, y = 0, z = 0, t = 0;
+            let decimals = 2;
+            let reg;
 
             window.onload = show;
 
@@ -68,17 +70,17 @@
                     z = y;
                     y = x;
                 }
-                if (action != CONCAT) {
-                    action = CONCAT;
+                if (action != INSERT) {
+                    action = INSERT;
                     x = 0
                 }
 
-                x = x * 10 + c;
+                x = parseFloat(x.toString() + c.toString());
                 show();
             }
 
             function show() {
-                document.getElementById("display").innerHTML = y + "<br>" + x;
+                document.getElementById("display").innerHTML = y.toFixed(decimals) + "<br>" + (action == INSERT ? x : x.toFixed(decimals));
             }
 
             function enter() {
@@ -143,15 +145,6 @@
                 show();
             }
 
-            function lstx() {
-                action = ROLL;
-                t = z;
-                z = y;
-                y = x;
-                x = l;
-                show();
-            }
-
             function clx() {
                 action = null;
                 x = 0;
@@ -162,11 +155,49 @@
                 x = -1 * x;
                 show();
             }
+
+            function lstx() {
+                action = ROLL;
+                t = z;
+                z = y;
+                y = x;
+                x = l;
+                show();
+            }
+
+            function percent() {
+                action = ROLL;
+                l = x;
+                x = x / 100 * y;
+                z = t;
+                y = z;
+                show();
+            }
+
+            function sto() {
+                action = null;
+                reg = x;
+                show();
+            }
+
+            function rcl() {
+                action = ROLL;
+                t = z;
+                z = y;
+                y = x;
+                x = reg;
+                show();
+            }
         </script>
     </head>
     <body>
         <div id="display"></div>
         <div id="keyboard">
+            <button onclick="percent()">%</button>
+            <button onclick="lstx()">lst<i>x</i></button>
+            <button onclick="sto()">STO</button>
+            <button onclick="rcl()">RCL</button>
+
             <button onclick="chs()">+/-</button>
             <button onclick="swap()">↓↑</button>
             <button onclick="rotate()">↓</button>

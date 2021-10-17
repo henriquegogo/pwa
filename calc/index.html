@@ -40,7 +40,7 @@
                 width: 100%;
             }
             button {
-                float: right;
+                float: left;
                 margin: -1px;
                 width: calc(25% + 2px);
                 height: calc(20% + 2px);
@@ -56,121 +56,137 @@
         <script type="text/javascript">
             navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
 
-            let inserting = true;
-            let lastx = 0;
-            let stack = [0, 0, 0, 0];
+            const CONCAT = 'concat'; ROLL = 'roll';
+            let action = CONCAT;
+            let l = 0, x = 0, y = 0, z = 0, t = 0;
 
             function insert(c) {
-                if (!inserting) stack[0] = 0;
-                inserting = true;
-                let x = parseFloat('' + stack[0] + c);
-                show(x);
+                if (action == ROLL) {
+                    t = z;
+                    z = y;
+                    y = x;
+                }
+                if (action != CONCAT) {
+                    action = CONCAT;
+                    x = 0
+                }
+
+                x = parseFloat('' + x + c);
+                display(x);
             }
 
-            function show(num) {
-                stack[0] = num;
-                display.innerText = stack[0];
+            function display(num) {
+                document.getElementById("display").innerText = x;
             }
 
             function enter() {
-                stack[3] = stack[2];
-                stack[2] = stack[1];
-                stack[1] = stack[0];
-                inserting = false;
+                action = null;
+                t = z;
+                z = y;
+                y = x;
             }
 
             function add() {
-                lastx = stack[0];
-                show(stack[1] + stack[0]);
-                stack[2] = stack[3];
-                stack[1] = stack[2];
-                inserting = false;
+                action = ROLL;
+                l = x;
+                x = y + x;
+                z = t;
+                y = z;
+                display(x);
             }
 
             function sub() {
-                lastx = stack[0];
-                show(stack[1] - stack[0]);
-                stack[2] = stack[3];
-                stack[1] = stack[2];
-                inserting = false;
+                action = ROLL;
+                l = x;
+                x = y - x;
+                z = t;
+                y = z;
+                display(x);
             }
 
             function mul() {
-                lastx = stack[0];
-                show(stack[1] * stack[0]);
-                stack[2] = stack[3];
-                stack[1] = stack[2];
-                inserting = false;
+                action = ROLL;
+                l = x;
+                x = y * x;
+                z = t;
+                y = z;
+                display(x);
             }
 
             function div() {
-                lastx = stack[0];
-                show(stack[1] / stack[0]);
-                stack[2] = stack[3];
-                stack[1] = stack[2];
-                inserting = false;
+                action = ROLL;
+                l = x;
+                x = y / x;
+                z = t;
+                y = z;
+                display(x);
             }
 
             function swap() {
-                let x = stack[0];
-                show(stack[1]);
-                stack[1] = x;
-                inserting = false;
+                action = ROLL;
+                let current = x;
+                x = y;
+                y = current;
+                display(x);
             }
 
             function rotate() {
-                let x = stack[0];
-                show(stack[1]);
-                stack[1] = stack[2];
-                stack[2] = stack[3];
-                stack[3] = x;
-                inserting = false;
+                action = ROLL;
+                let current = x;
+                x = y;
+                y = z;
+                z = t;
+                t = current;
+                display(y);
             }
 
             function lstx() {
-                stack[3] = stack[2];
-                stack[2] = stack[1];
-                stack[1] = stack[0];
-                show(lastx);
-                inserting = false;
+                action = ROLL;
+                t = z;
+                z = y;
+                y = x;
+                display(l);
             }
 
             function clx() {
-                show(0);
+                action = null;
+                x = 0;
+                display(x);
             }
 
             function chs() {
-                show(-1 * stack[0]);
+                x = -1 * x;
+                display(x);
             }
         </script>
     </head>
     <body>
         <div id="display"></div>
         <div id="keyboard">
-            <button onclick="rotate()">R🠗</button>
-            <button onclick="swap()">x≷y</button>
-            <button onclick="chs()">CHS</button>
             <button onclick="clx()">CLX</button>
+            <button onclick="chs()">CHS</button>
+            <button onclick="swap()">x≷y</button>
+            <button onclick="rotate()">R🠗</button>
 
-            <button onclick="div()">/</button>
-            <button onclick="insert(9)">9</button>
-            <button onclick="insert(8)">8</button>
             <button onclick="insert(7)">7</button>
+            <button onclick="insert(8)">8</button>
+            <button onclick="insert(9)">9</button>
+            <button onclick="div()">/</button>
 
-            <button onclick="mul()">*</button>
-            <button onclick="insert(6)">6</button>
-            <button onclick="insert(5)">5</button>
             <button onclick="insert(4)">4</button>
+            <button onclick="insert(5)">5</button>
+            <button onclick="insert(6)">6</button>
+            <button onclick="mul()">*</button>
 
-            <button onclick="add()">+</button>
-            <button onclick="insert(3)">3</button>
-            <button onclick="insert(2)">2</button>
             <button onclick="insert(1)">1</button>
+            <button onclick="insert(2)">2</button>
+            <button onclick="insert(3)">3</button>
+            <button onclick="add()">+</button>
 
-            <button onclick="sub()">-</button>
-            <button onclick="enter()">ENTER</button>
-            <button onclick="insert(.)">.</button>
             <button onclick="insert(0)">0</button>
+            <button onclick="insert(.)">.</button>
+            <button onclick="enter()">ENTER</button>
+            <button onclick="sub()">-</button>
         </div>
     </body>
 </html>

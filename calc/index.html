@@ -179,10 +179,12 @@
             }
 
             function rcl() {
+                if (action == ROLL) {
+                    t = z;
+                    z = y;
+                    y = x;
+                }
                 action = ROLL;
-                t = z;
-                z = y;
-                y = x;
                 x = reg;
                 show();
             }

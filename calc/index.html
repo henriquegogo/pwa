@@ -60,7 +60,7 @@
             let action;
             let l = 0, x = 0, y = 0, z = 0, t = 0;
             let decimals = 2;
-            let reg;
+            let reg = 0;
 
             window.onload = show;
 
@@ -95,8 +95,8 @@
                 action = ROLL;
                 l = x;
                 x = y + x;
-                z = t;
                 y = z;
+                z = t;
                 show();
             }
 
@@ -104,8 +104,8 @@
                 action = ROLL;
                 l = x;
                 x = y - x;
-                z = t;
                 y = z;
+                z = t;
                 show();
             }
 
@@ -113,8 +113,8 @@
                 action = ROLL;
                 l = x;
                 x = y * x;
-                z = t;
                 y = z;
+                z = t;
                 show();
             }
 
@@ -122,8 +122,8 @@
                 action = ROLL;
                 l = x;
                 x = y / x;
-                z = t;
                 y = z;
+                z = t;
                 show();
             }
 
@@ -169,8 +169,6 @@
                 action = ROLL;
                 l = x;
                 x = x / 100 * y;
-                z = t;
-                y = z;
                 show();
             }
 

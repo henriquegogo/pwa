@@ -64,16 +64,27 @@
             const INSERT = 'concat'; ROLL = 'roll';
             let action;
             let l = 0, x = 0, y = 0, z = 0, t = 0;
-            let decimals = 2;
             let reg = 0;
+            let decimals = 2;
 
             window.onload = show;
 
+            function stackup() {
+                t = z;
+                z = y;
+                y = x;
+            }
+
+            function stackdown() {
+                l = x;
+                x = y;
+                y = z;
+                z = t;
+            }
+
             function insert(c) {
                 if (action == ROLL) {
-                    t = z;
-                    z = y;
-                    y = x;
+                    stackup();
                 }
                 if (action != INSERT) {
                     action = INSERT;
@@ -88,47 +99,42 @@
                 document.getElementById("display").innerHTML = y.toFixed(decimals) + "<br>" + (action == INSERT ? x : x.toFixed(decimals));
             }
 
+            function decimal() {
+                x = x / 10;
+                show();
+            }
+
             function enter() {
                 action = null;
-                t = z;
-                z = y;
-                y = x;
+                stackup();
                 show();
             }
 
             function add() {
                 action = ROLL;
-                l = x;
-                x = y + x;
-                y = z;
-                z = t;
+                stackdown();
+                x = x + l;
                 show();
             }
 
             function sub() {
                 action = ROLL;
-                l = x;
-                x = y - x;
-                y = z;
-                z = t;
+                stackdown();
+                x = x - l;
                 show();
             }
 
             function mul() {
                 action = ROLL;
-                l = x;
-                x = y * x;
-                y = z;
-                z = t;
+                stackdown();
+                x = x * l;
                 show();
             }
 
             function div() {
                 action = ROLL;
-                l = x;
-                x = y / x;
-                y = z;
-                z = t;
+                stackdown();
+                x = x / l;
                 show();
             }
 
@@ -163,9 +169,7 @@
 
             function lstx() {
                 action = ROLL;
-                t = z;
-                z = y;
-                y = x;
+                stackup();
                 x = l;
                 show();
             }
@@ -185,9 +189,7 @@
 
             function rcl() {
                 if (action == ROLL || action == INSERT) {
-                    t = z;
-                    z = y;
-                    y = x;
+                    stackup();
                 }
                 action = ROLL;
                 x = reg;
@@ -224,7 +226,7 @@
             <button onclick="sub()">−</button>
 
             <button onclick="insert(0)">0</button>
-            <button onclick="insert(.)">.</button>
+            <button onclick="decimal()">.</button>
             <button onclick="enter()">⤶</button>
             <button onclick="add()">+</button>
         </div>

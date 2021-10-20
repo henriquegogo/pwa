@@ -61,10 +61,10 @@
         <script type="text/javascript">
             navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
 
-            const INSERT = 'concat'; ROLL = 'roll';
-            let action;
+            const NONE = 0, INSERT = 1, ROLL = 2, DECIMAL = 3;
+            let action = NONE;
             let l = 0, x = 0, y = 0, z = 0, t = 0;
-            let reg = 0;
+            let regs = [];
             let decimals = 2;
 
             window.onload = show;
@@ -76,42 +76,52 @@
             }
 
             function stackdown() {
-                l = x;
                 x = y;
                 y = z;
                 z = t;
             }
 
+            function isFloat(n) {
+                return x.toString().includes("."); 
+            }
+
             function insert(c) {
-                if (action == ROLL) {
-                    stackup();
-                }
-                if (action != INSERT) {
-                    action = INSERT;
-                    x = 0
-                }
+                if (action == ROLL) stackup();
+                if (action == NONE || action == ROLL) x = 0;
 
                 x = parseFloat(x.toString() + c.toString());
+
+                if (action == DECIMAL && !isFloat(x)) x = x / 10;
+
+                action = INSERT;
                 show();
             }
 
             function show() {
-                document.getElementById("display").innerHTML = y.toFixed(decimals) + "<br>" + (action == INSERT ? x : x.toFixed(decimals));
+                display.innerHTML =
+                    y.toFixed(decimals) + "<br>" +
+                    (action == INSERT ? x : x.toFixed(decimals));
             }
 
             function decimal() {
-                x = x / 10;
-                show();
+                if (action != INSERT) {
+                    action = INSERT;
+                    stackup();
+                    x = 0;
+                    show();
+                }
+                action = DECIMAL;
             }
 
             function enter() {
-                action = null;
+                action = NONE;
                 stackup();
                 show();
             }
 
             function add() {
                 action = ROLL;
+                l = x;
                 stackdown();
                 x = x + l;
                 show();
@@ -119,6 +129,7 @@
 
             function sub() {
                 action = ROLL;
+                l = x;
                 stackdown();
                 x = x - l;
                 show();
@@ -126,6 +137,7 @@
 
             function mul() {
                 action = ROLL;
+                l = x;
                 stackdown();
                 x = x * l;
                 show();
@@ -133,6 +145,7 @@
 
             function div() {
                 action = ROLL;
+                l = x;
                 stackdown();
                 x = x / l;
                 show();
@@ -149,15 +162,13 @@
             function rotate() {
                 action = ROLL;
                 let current = x;
-                x = y;
-                y = z;
-                z = t;
+                stackdown();
                 t = current;
                 show();
             }
 
             function clx() {
-                action = null;
+                action = NONE;
                 x = 0;
                 show();
             }
@@ -183,16 +194,14 @@
 
             function sto() {
                 action = ROLL;
-                reg = x;
+                regs[0] = x;
                 show();
             }
 
             function rcl() {
-                if (action == ROLL || action == INSERT) {
-                    stackup();
-                }
+                if (action) stackup();
                 action = ROLL;
-                x = reg;
+                x = regs[0];
                 show();
             }
         </script>

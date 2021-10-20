@@ -26,10 +26,11 @@
                 position: absolute;
                 left: 0;
                 right: 0;
-                padding-right: 10px;
-                height: 200px;
+                padding: 10px;
+                box-sizing: border-box;
+                height: 260px;
                 font-size: 60px;
-                line-height: 100px;
+                line-height: 60px;
                 letter-spacing: 0.1em;
                 color: #FFF;
                 text-align: right;
@@ -37,7 +38,7 @@
             }
             #keyboard {
                 position: absolute;
-                top: 200px;
+                top: 260px;
                 bottom: 0;
                 width: 100%;
             }
@@ -95,6 +96,8 @@
 
             function show() {
                 display.innerHTML =
+                    t.toFixed(decimals) + "<br>" +
+                    z.toFixed(decimals) + "<br>" +
                     y.toFixed(decimals) + "<br>" +
                     (action == INSERT ? xs : x.toFixed(decimals));
             }

@@ -61,8 +61,9 @@
         <script type="text/javascript">
             navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
 
-            const NONE = 0, INSERT = 1, ROLL = 2, DECIMAL = 3;
+            const NONE = 0, INSERT = 1, ROLL = 2;
             let action = NONE;
+            let xs = '';
             let l = 0, x = 0, y = 0, z = 0, t = 0;
             let regs = [];
             let decimals = 2;
@@ -81,17 +82,12 @@
                 z = t;
             }
 
-            function isFloat(n) {
-                return x.toString().includes("."); 
-            }
-
             function insert(c) {
                 if (action == ROLL) stackup();
-                if (action == NONE || action == ROLL) x = 0;
+                if (action == NONE || action == ROLL) xs = '';
 
-                x = parseFloat(x.toString() + c.toString());
-
-                if (action == DECIMAL && !isFloat(x)) x = x / 10;
+                xs = xs + c;
+                x = parseFloat(xs || 0);
 
                 action = INSERT;
                 show();
@@ -100,17 +96,18 @@
             function show() {
                 display.innerHTML =
                     y.toFixed(decimals) + "<br>" +
-                    (action == INSERT ? x : x.toFixed(decimals));
+                    (action == INSERT ? xs : x.toFixed(decimals));
             }
 
             function decimal() {
                 if (action != INSERT) {
                     action = INSERT;
                     stackup();
-                    x = 0;
-                    show();
+                    xs = '0';
                 }
-                action = DECIMAL;
+                
+                if (!xs.includes(".")) xs = xs + '.';
+                show();
             }
 
             function enter() {
@@ -174,6 +171,7 @@
             }
 
             function chs() {
+                xs = '-' + xs;
                 x = -1 * x;
                 show();
             }

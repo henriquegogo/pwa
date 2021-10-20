@@ -84,7 +84,7 @@
 
             function insert(c) {
                 if (action == ROLL) stackup();
-                if (action == NONE || action == ROLL) xs = '';
+                if (action != INSERT) xs = '';
 
                 xs = xs + c;
                 x = parseFloat(xs || 0);

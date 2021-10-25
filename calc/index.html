@@ -62,6 +62,10 @@
                 cursor: pointer;
                 box-shadow: inset -5px -5px 20px #CCC;
             }
+            button.small {
+                width: calc(20% + 2px);
+                height: calc(100% / 7 + 2px);
+            }
         </style>
         <script type="text/javascript">
             navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
@@ -217,6 +221,13 @@
                 show();
             }
 
+            function deltapercent() {
+                action = ROLL;
+                l = x;
+                x = (x - y) * 100 / y;
+                show();
+            }
+
             function sto() {
                 action = STO;
             }
@@ -224,6 +235,13 @@
             function rcl() {
                 if (action) stackup();
                 action = RCL;
+            }
+
+            function square() {
+                action = ROLL;
+                l = x;
+                x = x ** 2;
+                show();
             }
 
             function power() {
@@ -248,10 +266,10 @@
                 show();
             }
 
-            function square() {
+            function exp() {
                 action = ROLL;
                 l = x;
-                x = x ** 2;
+                x = Math.exp(x);
                 show();
             }
         </script>
@@ -259,15 +277,17 @@
     <body>
         <div id="display"></div>
         <div id="keyboard">
-            <button onclick="power()"><i>yˣ</i></button>
-            <button onclick="root()">√<i>x</i></button>
-            <button onclick="overx()">1/<i>x</i></button>
-            <button onclick="square()"><i>x</i> ²</button>
+            <button class="small" onclick="square()"><i>x</i> ²</button>
+            <button class="small" onclick="power()"><i>yˣ</i></button>
+            <button class="small" onclick="root()">√<i>x</i></button>
+            <button class="small" onclick="overx()">1/<i>x</i></button>
+            <button class="small" onclick="exp()"><i>eˣ</i></button>
 
-            <button onclick="percent()">%</button>
-            <button onclick="lstx()">lst<i>x</i></button>
-            <button onclick="sto()">STO</button>
-            <button onclick="rcl()">RCL</button>
+            <button class="small" onclick="percent()">%</button>
+            <button class="small" onclick="deltapercent()">𝚫%</button>
+            <button class="small" onclick="lstx()">lst<i>x</i></button>
+            <button class="small" onclick="sto()">STO</button>
+            <button class="small" onclick="rcl()">RCL</button>
 
             <button onclick="chs()">+/-</button>
             <button onclick="swap()">↓↑</button>

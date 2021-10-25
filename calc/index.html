@@ -12,7 +12,9 @@
         <link rel="stylesheet" href="./style.css" />
         <script type="text/javascript" src="./application.js"></script>
         <script type="text/javascript">
-            navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
+        if (navigator.serviceWorker) {
+            navigator.serviceWorker.register("serviceWorker.js").then(reg => reg.update());
+        }
         </script>
     </head>
     <body>

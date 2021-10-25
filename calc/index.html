@@ -10,7 +10,7 @@
         <link rel="manifest" href="manifest.json" />
         <title>Cold Calculator</title>
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Teko:wght@500');
             body {
                 position: fixed;
                 margin: 0;
@@ -19,7 +19,7 @@
                 left: 0;
                 right: 0;
                 overflow: hidden;
-                font-family: 'Bebas Neue', cursive;
+                font-family: 'Teko', sans-serif;
                 background: #333;
             }
             #display {
@@ -28,17 +28,21 @@
                 right: 0;
                 padding: 10px;
                 box-sizing: border-box;
-                height: 260px;
+                height: 200px;
                 font-size: 60px;
-                line-height: 60px;
+                line-height: 40px;
                 letter-spacing: 0.1em;
                 color: #FFF;
                 text-align: right;
                 box-shadow: inset 0 0 30px #111;
             }
+            #display small:last-of-type {
+                display: inline-block;
+                padding-bottom: 10px;
+            }
             #keyboard {
                 position: absolute;
-                top: 260px;
+                top: 200px;
                 bottom: 0;
                 width: 100%;
             }
@@ -46,17 +50,17 @@
                 float: left;
                 margin: -1px;
                 width: calc(25% + 2px);
-                height: calc(16.67% + 2px);
+                height: calc(100% / 7 + 2px);
                 padding-right: 10px;
                 padding-bottom: 10px;
-                font-family: 'Bebas Neue', cursive;
+                font-family: 'Teko', sans-serif;
                 font-size: 40px;
                 color: #666;
                 background: #DDD;
                 border: 1px solid #CCC;
                 outline: none;
                 cursor: pointer;
-                box-shadow: inset -10px -10px 10px #CCC;
+                box-shadow: inset -5px -5px 20px #CCC;
             }
         </style>
         <script type="text/javascript">
@@ -96,9 +100,9 @@
 
             function show() {
                 display.innerHTML =
-                    t.toFixed(decimals) + "<br>" +
-                    z.toFixed(decimals) + "<br>" +
-                    y.toFixed(decimals) + "<br>" +
+                    "<small>" + t.toFixed(decimals) + "</small><br>" +
+                    "<small>" + z.toFixed(decimals) + "</small><br>" +
+                    "<small>" + y.toFixed(decimals) + "</small><br>" +
                     (action == INSERT ? xs : x.toFixed(decimals));
             }
 
@@ -205,11 +209,45 @@
                 x = regs[0];
                 show();
             }
+
+            function power() {
+                action = ROLL;
+                l = x;
+                stackdown();
+                x = y ** x;
+                show();
+            }
+
+            function root() {
+                action = ROLL;
+                l = x;
+                x = Math.sqrt(x);
+                show();
+            }
+
+            function overx() {
+                action = ROLL;
+                l = x;
+                x = 1/x;
+                show();
+            }
+
+            function square() {
+                action = ROLL;
+                l = x;
+                x = x ** 2;
+                show();
+            }
         </script>
     </head>
     <body>
         <div id="display"></div>
         <div id="keyboard">
+            <button onclick="power()"><i>yˣ</i></button>
+            <button onclick="root()">√<i>x</i></button>
+            <button onclick="overx()">1/<i>x</i></button>
+            <button onclick="square()"><i>x</i> ²</button>
+
             <button onclick="percent()">%</button>
             <button onclick="lstx()">lst<i>x</i></button>
             <button onclick="sto()">STO</button>

@@ -89,22 +89,22 @@
             }
 
             function insert(c) {
-                c = regten + c;
-                regten = 0;
-
                 if (action == STO) {
                     action = ROLL;
-                    regs[c] = x;
+                    regs[regten + c] = x;
+                    regten = 0;
                     return show();
                 }
                 else if (action == RCL) {
                     action = ROLL;
-                    x = regs[c];
+                    x = regs[regten + c];
+                    regten = 0;
                     return show();
                 }
                 else if (action == ROLL) {
                     stackup();
                 }
+                regten = 0;
 
                 if (action == NONE || action == ROLL) xs = '';
 

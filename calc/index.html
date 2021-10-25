@@ -66,11 +66,12 @@
         <script type="text/javascript">
             navigator.serviceWorker && navigator.serviceWorker.register("serviceWorker.js");
 
-            const NONE = 0, INSERT = 1, ROLL = 2;
+            const NONE = 0, INSERT = 1, ROLL = 2, STO = 3, RCL = 4;
             let action = NONE;
             let xs = '';
             let l = 0, x = 0, y = 0, z = 0, t = 0;
-            let regs = [];
+            let regten = 0;
+            let regs = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             let decimals = 2;
 
             window.onload = show;
@@ -88,8 +89,24 @@
             }
 
             function insert(c) {
-                if (action == ROLL) stackup();
-                if (action != INSERT) xs = '';
+                c = regten + c;
+                regten = 0;
+
+                if (action == STO) {
+                    action = ROLL;
+                    regs[c] = x;
+                    return show();
+                }
+                else if (action == RCL) {
+                    action = ROLL;
+                    x = regs[c];
+                    return show();
+                }
+                else if (action == ROLL) {
+                    stackup();
+                }
+
+                if (action == NONE || action == ROLL) xs = '';
 
                 xs = xs + c;
                 x = parseFloat(xs || 0);
@@ -107,7 +124,10 @@
             }
 
             function decimal() {
-                if (action != INSERT) {
+                if (action == STO || action == RCL) {
+                    return regten = 10;
+                }
+                else if (action == NONE || action == ROLL) {
                     action = INSERT;
                     stackup();
                     xs = '0';
@@ -198,16 +218,12 @@
             }
 
             function sto() {
-                action = ROLL;
-                regs[0] = x;
-                show();
+                action = STO;
             }
 
             function rcl() {
                 if (action) stackup();
-                action = ROLL;
-                x = regs[0];
-                show();
+                action = RCL;
             }
 
             function power() {

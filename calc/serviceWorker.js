@@ -1,3 +1,5 @@
+// Version: 0.11
+
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open('sw-cache').then(function(cache) {

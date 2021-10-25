@@ -1,6 +1,7 @@
 {
   "short_name": "Cold Calc",
   "name": "Cold Calculator",
+  "version": 0.9,
   "icons": [
     {
       "src": "favicon.ico",

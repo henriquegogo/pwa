@@ -1,5 +1,3 @@
-const version = 0.9;
-
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open('sw-cache').then(function(cache) {

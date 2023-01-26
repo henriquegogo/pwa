@@ -5,17 +5,18 @@
     {
       "src": "icon192.png",
       "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "maskable any"
+      "sizes": "192x192"
     },
     {
       "src": "icon512.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "maskable any"
+      "purpose": "any"
     }	    
   ],
   "start_url": "./index.html",
+  "scope": "https://gogs.com.br/pwa/calc/",
+  "orientation": "portrait",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",

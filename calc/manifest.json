@@ -14,7 +14,7 @@
       "purpose": "any"
     }	    
   ],
-  "start_url": "./index.html",
+  "start_url": "https://gogs.com.br/pwa/calc/index.html",
   "scope": "https://gogs.com.br/pwa/calc/",
   "orientation": "portrait",
   "display": "standalone",

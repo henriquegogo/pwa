@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Query to body</title>
+
+<style>
+textarea {
+  position: fixed;
+  top: 0; bottom: 0; left: 0; right: 0;
+  padding: 30px;
+  font-family: sans-serif;
+  font-size: 40px;
+  border: none;
+}
+</style>
+
+<script>
+window.onload = function() {
+  text.value = decodeURI(location.search.substring(1));
+  text.onkeyup = function() {
+    history.replaceState({}, "", "?" + encodeURI(text.value))
+  }
+};
+</script>
+
+<textarea id="text"></textarea>

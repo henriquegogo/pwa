@@ -7,6 +7,7 @@
       } else {
         content.value += key.dataset.value || key.innerText;
       }
+      content.scrollTop = content.scrollHeight;
     }
   }
 })();

@@ -7,7 +7,6 @@
       } else {
         content.value += key.dataset.value || key.innerText;
       }
-      content.focus();
     }
   }
 })();

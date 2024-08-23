@@ -1,0 +1,23 @@
+{
+  "short_name": "HP12C",
+  "name": "HP12C",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "purpose": "any"
+    }	    
+  ],
+  "start_url": "https://gogs.com.br/pwa/hp12c/index.html",
+  "scope": "https://gogs.com.br/pwa/hp12c/",
+  "orientation": "landscape",
+  "display": "fullscreen",
+  "theme_color": "#111111",
+  "background_color": "#111111",
+  "description": "HP12C",
+  "categories": [
+    "education",
+    "finance",
+    "utilities"
+  ]
+}

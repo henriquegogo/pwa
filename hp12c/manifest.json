@@ -1,6 +1,12 @@
 {
   "short_name": "HP12C",
   "name": "HP12C",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png"
+    }	    
+  ],
   "start_url": ".",
   "orientation": "landscape",
   "display": "fullscreen",

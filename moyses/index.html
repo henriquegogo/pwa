@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Moysés">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="icon" href="favicon.png">
+  <title>Moysés App</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #2563eb;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --text: #1e293b;
+    }
+
+    html, body {
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--accent);
+      color: white;
+      padding: 14px 16px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      background: var(--card);
+      border: 2px solid transparent;
+      border-radius: 16px;
+      padding: 18px 12px 14px;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    .btn.playing {
+      background: #e8f0fe;
+      border-color: var(--accent);
+      box-shadow: 0 4px 14px rgba(37,99,235,0.2);
+    }
+
+    .btn-img {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: box-shadow 0.2s ease;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 3px white, 0 0 0 6px var(--accent); }
+      50%       { box-shadow: 0 0 0 3px white, 0 0 0 10px var(--accent); }
+    }
+
+    .btn.playing .btn-img {
+      animation: pulse-ring 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <header>Moysés App</header>
+  <main class="grid" id="grid"></main>
+
+  <script>
+    const sounds = [
+      ['Aclamemos',          'media/AclamemosEvangelo.mp3'],
+      ['Aplauda forte',      'media/AplaudaForte.mp3'],
+      ['José(r)Antônio',     'media/DomJoserAntonio.mp3'],
+      ['Fila da comunhão',   'media/FilaDaComunhao.mp3'],
+      ['Honrando nossa mãe', 'media/HonrandoNossaMae.mp3'],
+      ['Não é um clube',     'media/NaoEhUmClube.mp3'],
+      ['Obstacularizando',   'media/Obstacularizando.mp3'],
+      ['Reconciliação',      'media/PreparadoReconciliacao.mp3'],
+      ['De pé',              'media/DePe.mp3'],
+      ['Agradicer',          'media/Agradicer.mp3'],
+      ['Que que há',         'media/QueQueAGracas.mp3'],
+      ['Ei você',            'media/EiVoce.mp3'],
+      ['Já está na hora',    'media/JaEstaNaHora.mp3'],
+      ['Bom dia',            'media/BomDiaMeuIrmao.mp3'],
+      ['Então peço',         'media/EntaoPeco.mp3'],
+      ['Risada',             'media/Risada.mp3'],
+    ];
+
+    const grid = document.getElementById('grid');
+    let activeAudio = null;
+    let activeBtn = null;
+
+    sounds.forEach(([label, src]) => {
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.innerHTML = `<img class="btn-img" src="botao.png" alt=""><span>${label}</span>`;
+
+      btn.addEventListener('click', () => {
+        if (activeAudio) {
+          activeAudio.pause();
+          activeAudio.currentTime = 0;
+          activeBtn.classList.remove('playing');
+          if (activeBtn === btn) {
+            activeAudio = null;
+            activeBtn = null;
+            return;
+          }
+        }
+
+        const audio = new Audio(src);
+        audio.play();
+        btn.classList.add('playing');
+        activeAudio = audio;
+        activeBtn = btn;
+
+        audio.addEventListener('ended', () => {
+          btn.classList.remove('playing');
+          activeAudio = null;
+          activeBtn = null;
+        });
+      });
+
+      grid.appendChild(btn);
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+  </script>
+</body>
+</html>
